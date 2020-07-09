@@ -3,7 +3,7 @@ package ru.job4j.iterator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class EvenIterator implements Iterator {
+public class EvenIterator implements Iterator<Integer> {
     private final int[] data;
     private int point = 0;
 
@@ -13,7 +13,7 @@ public class EvenIterator implements Iterator {
 
     @Override
     public boolean hasNext() {
-        return point < data.length && nextEven(false) != -1;
+        return point < data.length && nextEven();
     }
 
     @Override
@@ -21,16 +21,16 @@ public class EvenIterator implements Iterator {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-        return nextEven(true);
+        return data[point++];
     }
 
-    private int nextEven(boolean pointIncrease) {
+    private boolean nextEven() {
         for (int i = point; i < data.length; i++) {
             if (data[i] % 2 == 0) {
-                point = pointIncrease ? i + 1 : point;
-                return data[i];
+                point = i;
+                return true;
             }
         }
-      return -1;
+      return false;
     }
 }
