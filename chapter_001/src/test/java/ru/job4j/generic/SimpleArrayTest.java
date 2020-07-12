@@ -3,10 +3,7 @@ package ru.job4j.generic;
 import org.junit.Assert;
 import org.junit.Test;
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNull.nullValue;
-
 import java.util.Iterator;
-import java.util.List;
 
 public class SimpleArrayTest {
 
@@ -55,6 +52,15 @@ public class SimpleArrayTest {
         Assert.assertThat(it.hasNext(), is(true));
         Assert.assertThat(it.next(), is("a"));
         Assert.assertThat(it.hasNext(), is(false));
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void whenGetIteratorAndChangeArray() {
+        var simpleArray = new SimpleArray<String>(2);
+        simpleArray.add("a");
+        Iterator<String> it = simpleArray.iterator();
+        simpleArray.add("b");
+        it.hasNext();
     }
 }
 

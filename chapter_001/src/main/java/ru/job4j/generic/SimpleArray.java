@@ -4,10 +4,10 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-public class SimpleArray<T> implements Iterable<T>, Iterator<T> {
+public class SimpleArray<T> implements Iterable<T> {
     private Object[] objects;
     private int index = 0;
-    private int cursor = 0;
+    private int modf = 0;
 
     public SimpleArray(int size) {
         if (size <= 0) {
@@ -19,6 +19,7 @@ public class SimpleArray<T> implements Iterable<T>, Iterator<T> {
     public boolean add(T model) {
         Objects.checkIndex(index, objects.length);
         this.objects[index++] = model;
+        modf++;
         return true;
     }
 
@@ -35,36 +36,47 @@ public class SimpleArray<T> implements Iterable<T>, Iterator<T> {
         } else {
         this.objects[in] = null;
         }
+        modf++;
         index--;
         return true;
     }
 
     public T get(int in) {
-        checkIndex(index);
+        checkIndex(in);
         return (T) objects[in];
     }
 
     private boolean checkIndex(int in) {
-        Objects.checkIndex(in, index + 1);
+        Objects.checkIndex(in, index);
         return true;
     }
 
     @Override
     public Iterator<T> iterator() {
-        return this;
-    }
+        return new Iterator<>() {
+            private final int modification = modf;
+            private int cursor = 0;
+            @Override
+            public boolean hasNext() {
+                isModified();
+                return cursor < index;
+            }
 
-    @Override
-    public boolean hasNext() {
-        return cursor < index;
-    }
+            @Override
+            public T next() {
+                isModified();
+                if (cursor > index) {
+                    throw new NoSuchElementException();
+                }
+                return (T) objects[cursor++];
+            }
 
-    @Override
-    public T next() {
-        if (cursor > index) {
-            throw new NoSuchElementException();
-        }
-        return (T) objects[cursor++];
+            private void isModified() {
+                if (modification != modf) {
+                    throw new IllegalStateException();
+                }
+            }
+        };
     }
 }
 
