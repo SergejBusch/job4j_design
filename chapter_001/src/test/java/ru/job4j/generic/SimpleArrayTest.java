@@ -54,8 +54,6 @@ public class SimpleArrayTest {
         Iterator<String> it = simpleArray.iterator();
         Assert.assertThat(it.hasNext(), is(true));
         Assert.assertThat(it.next(), is("a"));
-        Assert.assertThat(it.hasNext(), is(true));
-        Assert.assertThat(it.next(), nullValue());
         Assert.assertThat(it.hasNext(), is(false));
     }
 }
