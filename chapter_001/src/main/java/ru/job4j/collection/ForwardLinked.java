@@ -1,44 +1,29 @@
 package ru.job4j.collection;
 
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class ForwardLinked<T> implements Iterable<T> {
     private Node<T> head;
+    private int modCount = 0;
+    private int size = 0;
 
     public void add(T value) {
         Node<T> node = new Node<T>(value, null);
         if (head == null) {
             head = node;
+            modCount++;
+            size++;
             return;
         }
         Node<T> tail = head;
         while (tail.next != null) {
             tail = tail.next;
         }
+        modCount++;
+        size++;
         tail.next = node;
-    }
-
-    @Override
-    public Iterator<T> iterator() {
-        return new Iterator<T>() {
-            private Node<T> node = head;
-
-            @Override
-            public boolean hasNext() {
-                return node != null;
-            }
-
-            @Override
-            public T next() {
-                if (!hasNext()) {
-                    throw new NoSuchElementException();
-                }
-                T value = node.value;
-                node = node.next;
-                return value;
-            }
-        };
     }
 
     public T deleteFirst() {
@@ -46,13 +31,73 @@ public class ForwardLinked<T> implements Iterable<T> {
         Node<T> tmp = head;
         head = tmp.next;
         tmp.next = null;
+        modCount++;
+        size--;
         return tmp.value;
+    }
+
+    public T deleteLast() {
+        ifHeadIsNull();
+        if (size == 1) {
+            modCount++;
+            size--;
+            T value = head.value;
+            head = null;
+            return value;
+        }
+        Node<T> tmp = head;
+        while (tmp.next.next != null) {
+            tmp = tmp.next;
+        }
+        modCount++;
+        size--;
+        T value = tmp.next.value;
+        tmp.next = null;
+        return value;
     }
 
     private void ifHeadIsNull() {
         if (head == null) {
             throw new NoSuchElementException();
         }
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
+            private final int modified = modCount;
+            private Node<T> node = head;
+            private int index = 0;
+
+            @Override
+            public boolean hasNext() {
+                isModified();
+                return index < size;
+            }
+
+            @Override
+            public T next() {
+               isModified();
+               ifNoNext();
+               T value = node.value;
+               node = node.next;
+               index++;
+               return value;
+            }
+
+            private void isModified() {
+                if (modified != modCount) {
+                    throw new ConcurrentModificationException();
+                }
+
+            }
+
+            private void ifNoNext() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+            }
+        };
     }
 
     private static class Node<T> {
