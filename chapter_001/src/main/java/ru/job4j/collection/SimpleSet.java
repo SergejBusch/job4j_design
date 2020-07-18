@@ -1,6 +1,7 @@
 package ru.job4j.collection;
 
 import java.util.Iterator;
+import java.util.Objects;
 
 public class SimpleSet<T> implements Iterable<T> {
     private SimpleArray<T> data = new SimpleArray<>();
@@ -14,7 +15,7 @@ public class SimpleSet<T> implements Iterable<T> {
 
     private boolean isDuplicate(T e) {
         for (T value : data) {
-            if (value.equals(e)) {
+            if (Objects.equals(value, e)) {
                 return true;
             }
         }
