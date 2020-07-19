@@ -57,12 +57,20 @@ public class ForwardLinked<T> implements Iterable<T> {
     }
 
     public void revert() {
-        var temp = new ForwardLinked<T>();
-        while (size > 0) {
-           temp.add(deleteLast());
-        }
-        while (temp.size > 0) {
-            add(temp.deleteFirst());
+        ifHeadIsNull();
+        if (size > 1) {
+            var first = head;
+            var second = head.next;
+            first.next = null;
+            while (second.next != null) {
+                var temp = first;
+                first = second;
+                second = second.next;
+                first.next = temp;
+            }
+            head = second;
+            head.next = first;
+
         }
     }
 
