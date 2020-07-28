@@ -17,6 +17,7 @@ public class TreeTest {
                 tree.findBy(6).isPresent(),
                 is(true)
         );
+        assertThat(tree.isBinary(), is(false));
     }
 
     @Test
@@ -27,5 +28,19 @@ public class TreeTest {
                 tree.findBy(7).isPresent(),
                 is(false)
         );
+        assertThat(tree.isBinary(), is(true));
+    }
+
+    @Test
+    public void whenTreeIsBinaryThenTrue() {
+        Tree<Integer> tree = new Tree<>(1);
+        tree.add(1, 2);
+        tree.add(1, 3);
+        tree.add(2, 4);
+        tree.add(4, 3);
+        tree.add(4, 5);
+        tree.add(5, 9);
+        tree.add(5, 8);
+        assertThat(tree.isBinary(), is(true));
     }
 }
