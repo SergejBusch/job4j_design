@@ -23,7 +23,7 @@ class Tree<E> implements SimpleTree<E> {
 
     @Override
     public Optional<Node<E>> findBy(E value) {
-        return findByPredicate(n -> n.equals(value));
+        return findByPredicate(n -> n.value.equals(value));
     }
 
     public boolean isBinary() {
