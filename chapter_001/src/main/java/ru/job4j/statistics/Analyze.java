@@ -16,10 +16,10 @@ public class Analyze {
             } else if (!map.containsValue(user)) {
                 info.deleted++;
             }
-            info.added = current.size()
-                    + info.deleted
-                    - previous.size();
         }
+        info.added = current.size()
+                + info.deleted
+                - previous.size();
         return info;
         }
 
