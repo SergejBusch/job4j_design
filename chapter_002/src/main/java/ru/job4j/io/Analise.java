@@ -1,26 +1,30 @@
 package ru.job4j.io;
 
-import java.io.BufferedReader;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.PrintWriter;
+import java.io.*;
+import java.util.ArrayList;
 
 public class Analise {
-
     private static boolean start;
 
     public void unavailable(String source, String target) {
         try (var in = new BufferedReader(new FileReader(source));
-             var out = new PrintWriter(new FileOutputStream(target))) {
+             var writer = new FileWriter(target)
+        ) {
+            var data = new ArrayList<String>();
             in.lines().forEach(n -> {
                 if (!start && n.startsWith("400") || n.startsWith("500")) {
                     start = true;
-                    out.write(n.substring(4) + ";");
+                    data.add(n.substring(4) + ";");
                 } else if (start && n.startsWith("200") || n.startsWith("300")) {
                     start = false;
-                    out.println(n.substring(4) + ";");
+                    int index = data.size() - 1;
+                    data.set(index, data.get(index) + n.substring(4) + ";");
                 }
             });
+
+            for (String str : data) {
+                writer.write(str + System.lineSeparator());
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
