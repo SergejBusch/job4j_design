@@ -6,11 +6,10 @@ import java.util.ArrayList;
 public class Analise {
     private static boolean start;
 
-    public void unavailable(String source, String target) {
-        try (var in = new BufferedReader(new FileReader(source));
-             var writer = new FileWriter(target)
-        ) {
-            var data = new ArrayList<String>();
+    public void unavailable(String source, String target) throws IOException {
+        var data = new ArrayList<String>();
+
+        try (var in = new BufferedReader(new FileReader(source))) {
             in.lines().forEach(n -> {
                 if (!start && n.startsWith("400") || n.startsWith("500")) {
                     start = true;
@@ -21,12 +20,12 @@ public class Analise {
                     data.set(index, data.get(index) + n.substring(4) + ";");
                 }
             });
-
-            for (String str : data) {
-                writer.write(str + System.lineSeparator());
-            }
         } catch (Exception ex) {
             ex.printStackTrace();
+        }
+        var writer = new FileWriter(target);
+        for (String str : data) {
+            writer.write(str + System.lineSeparator());
         }
     }
 
