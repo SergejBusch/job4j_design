@@ -3,13 +3,13 @@ package ru.job4j.io;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static java.nio.file.FileVisitResult.CONTINUE;
 
 public class DuplicateSearch implements FileVisitor<Path> {
-    private List<Path> allFiles = new ArrayList<>();
+    private Set<Path> metFiles = new HashSet<>();
+    private List<Path> duplicates = new LinkedList<>();
 
     @Override
     public FileVisitResult preVisitDirectory(
@@ -19,21 +19,10 @@ public class DuplicateSearch implements FileVisitor<Path> {
 
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-        var add = true;
-        for (Path path : allFiles) {
-            if (!Files.isDirectory(file)
-                    && path.toFile().getName().equals(file.toFile().getName())
-                    && path.toFile().length() == file.toFile().length()) {
-                System.out.println("Duplicate found!" + System.lineSeparator()
-                        + "name : "  + path.toFile().getName() + System.lineSeparator()
-                        + "location : " + path.toFile().getPath() + System.lineSeparator()
-                        + "and : " + file.toFile().getPath() + System.lineSeparator()
-                        + "----");
-                add = false;
-            }
-        }
-        if (!Files.isDirectory(file) && add) {
-            allFiles.add(file);
+        if (!metFiles.contains(file.getFileName())) {
+            metFiles.add(file.getFileName());
+        } else {
+            duplicates.add(file);
         }
         return CONTINUE;
     }
@@ -48,8 +37,7 @@ public class DuplicateSearch implements FileVisitor<Path> {
         return CONTINUE;
     }
 
-    public static void main(String[] args) throws IOException {
-        Path path = Paths.get(".");
-        Files.walkFileTree(path, new DuplicateSearch());
+    public List<Path> getDuplicates() {
+        return duplicates;
     }
 }
