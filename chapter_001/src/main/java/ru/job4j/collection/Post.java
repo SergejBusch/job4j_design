@@ -1,41 +1,30 @@
 package ru.job4j.collection;
-
 import java.util.*;
 
 public class Post {
 
-    public static Map<String, String> removeDuplicates(Map<String, String> mapInput) {
+    public static Map<String, Set<String>> removeDuplicates(
+            LinkedHashMap<String, Set<String>> mapInput) {
         Map<String, String> mailAsKeyUserAsValue = new HashMap<>();
-        Map<String, String> result = new LinkedHashMap<>();
+        Map<String, Set<String>> result = new LinkedHashMap<>();
 
-        for (Map.Entry<String, String> entry : mapInput.entrySet()) {
-            String[] emails = entry.getValue().split(",");
-            boolean duplicateExist = false;
-            String user = null;
-            List<Integer> notDuplicateIndexes = new ArrayList<>(emails.length);
-
-            for (int i = 0; i < emails.length; i++) {
-                if (mailAsKeyUserAsValue.get(emails[i])  != null) {
-                    user = mailAsKeyUserAsValue.get(emails[i]);
-                    duplicateExist = true;
-                } else {
-                    notDuplicateIndexes.add(i);
+        for (Map.Entry<String, Set<String>> entry : mapInput.entrySet()) {
+            String name;
+            for (String mail : entry.getValue()) {
+                if (mailAsKeyUserAsValue.containsKey(mail)) {
+                    name = mailAsKeyUserAsValue.get(mail);
+                    var temp = new TreeSet<>(result.get(name));
+                    temp.addAll(entry.getValue());
+                    result.put(entry.getKey(), temp);
+                    result.remove(name);
+                    break;
                 }
             }
-            if (!duplicateExist) {
-                for (String email : emails) {
-                    mailAsKeyUserAsValue.put(email, entry.getKey());
-                }
-                result.put(entry.getKey(), entry.getValue());
-            } else {
-                StringBuilder emailsString = new StringBuilder(result.get(user));
-                for (Integer notDuplicateIndex : notDuplicateIndexes) {
-                    emailsString.append(",");
-                    emailsString.append(emails[notDuplicateIndex]);
-                    mailAsKeyUserAsValue.put(emails[notDuplicateIndex], user);
-                }
-                result.put(user, emailsString.toString());
+            result.putIfAbsent(entry.getKey(), entry.getValue());
+            for (String mail : result.get(entry.getKey())) {
+                mailAsKeyUserAsValue.put(mail, entry.getKey());
             }
+
         }
         return result;
     }
