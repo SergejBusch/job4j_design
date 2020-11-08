@@ -7,6 +7,10 @@ public class Sofa {
         this.material = material;
     }
 
+    public String getMaterial() {
+        return material;
+    }
+
     @Override
     public String toString() {
         return "Sofa{"

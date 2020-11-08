@@ -1,6 +1,6 @@
 package ru.job4j.io;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+
+import org.json.JSONObject;
 
 import java.util.Arrays;
 
@@ -18,6 +18,22 @@ public class Room {
         this.otherFurniture = otherFurniture;
     }
 
+    public boolean isHasWindows() {
+        return hasWindows;
+    }
+
+    public int getPowerSockets() {
+        return powerSockets;
+    }
+
+    public Sofa getSofa() {
+        return sofa;
+    }
+
+    public String[] getOtherFurniture() {
+        return otherFurniture;
+    }
+
     @Override
     public String toString() {
         return "Room {"
@@ -30,12 +46,11 @@ public class Room {
 
     public static void main(String[] args) {
         var room = new Room(true, 4, new Sofa("leather"), "Table", "Chair");
-        final Gson gson = new GsonBuilder().create();
-        System.out.println(gson.toJson(room));
+
 
         final String personJson =
                 "{"
-                        + "\"hasWindow\":true,"
+                        + "\"hasWindows\":true,"
                         + "\"powerSockets\":4,"
                         + "\"sofa\":"
                         + "{"
@@ -44,8 +59,10 @@ public class Room {
                         + "\"otherFurniture\":"
                         + "[\"Table\",\"Chair\"]"
                         + "}";
+        JSONObject jo = new JSONObject(personJson);
 
-        final Room room2 = gson.fromJson(personJson, Room.class);
-        System.out.println(room2);
+        System.out.println(jo);
+        System.out.println(new JSONObject(room));
+
     }
 }
