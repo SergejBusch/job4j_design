@@ -47,7 +47,6 @@ public class Room {
     public static void main(String[] args) {
         var room = new Room(true, 4, new Sofa("leather"), "Table", "Chair");
 
-
         final String personJson =
                 "{"
                         + "\"hasWindows\":true,"
