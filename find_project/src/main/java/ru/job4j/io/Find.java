@@ -13,15 +13,20 @@ public class Find {
     public static void main(String[] args) throws IOException {
         validate(args);
         Path start = Paths.get(args[1]);
+        Predicate<Path> predicate = getPredicate(args);
+        searchFile(start, predicate);
+        printToFile(args);
+
+    }
+
+    private static Predicate<Path> getPredicate(String[] args) {
         Predicate<Path> predicate = null;
         if (args[4].equals("-m")) {
             predicate = (e -> e.getFileName().toString().endsWith(args[3].replace("*", "")));
         } else if (args[4].equals("-f")) {
             predicate = (e -> e.toString().equals(args[3]));
         }
-        searchFile(start, predicate);
-        printToFile(args);
-
+        return predicate;
     }
 
     private static void searchFile(Path start, Predicate<Path> predicate) throws IOException {
