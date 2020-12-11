@@ -31,12 +31,9 @@ group by a.name;
 
 
 -- 3. Нужно получить все совещания, где не было ни одной заявки на посещения
-select
-    a.name from example1.public.appointments a
-left join (select aa.name, count(auu.confirmed) confirmed from example1.public.appointments aa
-           inner join appointments_users auu on aa.id = auu.appointment_id
-           where auu.confirmed = 'yes'
-           group by
-               name) au
-    on a.name = au.name
-where au.confirmed is null
+select a2.name from example1.public.appointments a2
+    except
+select a.name from example1.public.appointments a
+                       inner join appointments_users au on a.id = au.appointment_id
+where confirmed = 'yes'
+group by a.name
