@@ -6,16 +6,16 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class Cache {
-    private final SoftHashMap<String, Path> map = new SoftHashMap<>();
+    private final SoftHashMap<String, String> map = new SoftHashMap<>();
 
     public String get(String key) throws IOException {
-        Path value = map.get(key);
+        String value = map.get(key);
         if (value == null) {
             Path path = Paths.get(key);
-            map.put(key, path);
-            value = map.get(key);
+            value = getString(path);
+            map.put(key, value);
         }
-        return getString(value);
+        return value;
     }
 
     private String getString(Path path) throws IOException {
