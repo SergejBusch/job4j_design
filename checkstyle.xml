@@ -26,6 +26,10 @@
 
     <module name="TreeWalker">
 
+        <module name="DefaultComesLast">
+            <property name="skipIfLastAndSharedWithCase" value="true"/>
+        </module>
+
         <module name="DeclarationOrder"/>
 
         <module name="EmptyLineSeparator">
@@ -91,6 +95,9 @@
         <!--module name="InnerAssignment"/-->
         <!--<module name="MagicNumber"/>-->
         <module name="MissingSwitchDefault"/>
+        <module name="DefaultComesLast">
+            <property name="skipIfLastAndSharedWithCase" value="true"/>
+        </module>
         <module name="SimplifyBooleanExpression"/>
         <module name="SimplifyBooleanReturn"/>
 
