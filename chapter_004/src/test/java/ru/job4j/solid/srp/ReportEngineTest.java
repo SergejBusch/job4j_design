@@ -16,7 +16,7 @@ public class ReportEngineTest {
         store.add(worker);
         store.add(worker2);
         ReportEngine engine = new ReportEngine(store);
-        String result = engine.generate(em -> true, ReportFormat.HTML, SalaryTyp.SALARY_TYP_1,
+        String result = engine.generate(em -> true, new PrintHtml(), SalaryTyp.SALARY_TYP_1,
                 SortTyp.DESC, EmployerFields.FIRED, EmployerFields.HIRED);
         assertThat(result, is("[name='Vasya', hired=null, fired=null, salary=334.0\n" +
                         ", name='Ivan', hired=null, fired=null, salary=101.0\n" +
