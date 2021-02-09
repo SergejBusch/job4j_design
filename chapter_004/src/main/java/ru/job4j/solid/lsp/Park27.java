@@ -1,8 +1,8 @@
 package ru.job4j.solid.lsp;
 
 public class Park27 implements Park {
-    int truckPlaces;
-    int lightCarPlaces;
+    private int truckPlaces;
+    private int lightCarPlaces;
 
     public Park27(int truckPlaces, int carPlaces) {
         this.truckPlaces = truckPlaces;
