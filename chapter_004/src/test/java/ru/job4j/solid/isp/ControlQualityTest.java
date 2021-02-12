@@ -1,15 +1,11 @@
 package ru.job4j.solid.isp;
 
-import org.hamcrest.MatcherAssert;
 import org.junit.Test;
-import ru.job4j.solid.lsp.ControlQuality;
-import ru.job4j.solid.lsp.Food;
-import ru.job4j.solid.lsp.Storage;
+import ru.job4j.solid.lsp.foodstorage.*;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
-import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -24,7 +20,11 @@ public class ControlQualityTest {
                 Date.from(Instant.now().minus(Duration.ofDays(9))), 5, "xxx");
         var p3 = new Food("a3", Date.from(Instant.now()),
                 Date.from(Instant.now().minus(Duration.ofDays(12))), 5, "xxx");
-        var cq = new ControlQuality(List.of(p1, p2, p3));
+        var foodService = new FoodServiceImpl();
+        foodService.addFood(p1);
+        foodService.addFood(p2);
+        foodService.addFood(p3);
+        var cq = new ControlQuality(foodService);
         cq.control();
         var storages = cq.getStorages();
         Storage shop = null;
@@ -39,5 +39,10 @@ public class ControlQualityTest {
         }
         assertThat(shop.getFoodList().size(), is(2));
         assertThat(trash.getFoodList().size(), is(1));
+        var p4 = new Food("a4", Date.from(Instant.now()),
+                Date.from(Instant.now().minus(Duration.ofDays(12))), 5, "xxx");
+        assertThat(trash.getFoodList().size(), is(1));
+        cq.resort();
+        assertThat(trash.getFoodList().size(), is(2));
     }
 }

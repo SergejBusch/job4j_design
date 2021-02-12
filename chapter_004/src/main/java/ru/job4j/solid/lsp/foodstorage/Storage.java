@@ -1,4 +1,4 @@
-package ru.job4j.solid.lsp;
+package ru.job4j.solid.lsp.foodstorage;
 
 import java.util.List;
 

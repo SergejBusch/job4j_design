@@ -1,18 +1,18 @@
-package ru.job4j.solid.lsp;
+package ru.job4j.solid.lsp.foodstorage;
 
 import java.util.List;
 
 public class ControlQuality {
-    List<Food> foodList;
+    FoodService foodService;
     List<Storage> storages;
 
-    public ControlQuality(List<Food> foodList) {
-        this.foodList = foodList;
+    public ControlQuality(FoodService foodList) {
+        this.foodService = foodList;
         storages = Storages.getStorages();
     }
 
     public void control() {
-        List<Storage> storages = Storages.getStorages();
+        var foodList = foodService.getFood();
         for (var food : foodList) {
             int index = CheckExp.check(food);
             addToStorage(food, index);
@@ -29,5 +29,10 @@ public class ControlQuality {
 
     public List<Storage> getStorages() {
         return storages;
+    }
+
+    public void resort() {
+        Storages.clearStorages();
+        control();
     }
 }
