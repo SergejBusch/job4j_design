@@ -1,24 +1,17 @@
 package ru.job4j.solid.lsp.foodstorage;
 
-import java.util.ArrayList;
-import java.util.List;
+public class Shop extends Storage {
 
-public class Shop implements Storage {
-    List<Food> foodList = new ArrayList<>();
-
-    @Override
-    public boolean add(Food food, int index) {
+    boolean check(Food food, int index) {
         if (index >= 25 && index <= 75) {
-            return foodList.add(food);
+            return true;
         } else if (index > 75 && index < 100) {
-            food.setPrice(food.getPrice() * 0.2);
-            foodList.add(food);
+            if (!food.hasSale()) {
+                food.setPrice(food.getPrice() * 0.2);
+                food.setSale(true);
+            }
             return true;
         }
         return false;
-    }
-
-    public List<Food> getFoodList() {
-        return foodList;
     }
 }

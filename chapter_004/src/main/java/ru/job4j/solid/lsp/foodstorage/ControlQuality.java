@@ -1,5 +1,6 @@
 package ru.job4j.solid.lsp.foodstorage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ControlQuality {
@@ -8,15 +9,30 @@ public class ControlQuality {
 
     public ControlQuality(FoodService foodList) {
         this.foodService = foodList;
-        storages = Storages.getStorages();
+        storages = new Storages().getStorages();
     }
 
     public void control() {
         var foodList = foodService.getFood();
-        for (var food : foodList) {
-            int index = CheckExp.check(food);
-            addToStorage(food, index);
+        sort(foodList);
+    }
+
+    public List<Storage> getStorages() {
+        return storages;
+    }
+
+    public void resort() {
+        List<Food> foodList = new ArrayList<>();
+        for (var st : storages) {
+            var list = st.checkAffiliation();
+            if (!list.isEmpty()) {
+                foodList.addAll(list);
+            }
         }
+        if (!foodList.isEmpty()) {
+            sort(foodList);
+        }
+
     }
 
     private void addToStorage(Food food, int index) {
@@ -27,12 +43,10 @@ public class ControlQuality {
         }
     }
 
-    public List<Storage> getStorages() {
-        return storages;
-    }
-
-    public void resort() {
-        Storages.clearStorages();
-        control();
+    private void sort(List<Food> foodList) {
+        for (var food : foodList) {
+            int index = CheckExp.check(food);
+            addToStorage(food, index);
+        }
     }
 }

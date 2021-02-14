@@ -39,9 +39,7 @@ public class ControlQualityTest {
         }
         assertThat(shop.getFoodList().size(), is(2));
         assertThat(trash.getFoodList().size(), is(1));
-        var p4 = new Food("a4", Date.from(Instant.now()),
-                Date.from(Instant.now().minus(Duration.ofDays(12))), 5, "xxx");
-        assertThat(trash.getFoodList().size(), is(1));
+        p1.setDate1(Date.from(Instant.now().plus(Duration.ofDays(6))));
         cq.resort();
         assertThat(trash.getFoodList().size(), is(2));
     }

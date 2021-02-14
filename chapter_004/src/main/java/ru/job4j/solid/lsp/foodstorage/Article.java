@@ -48,6 +48,14 @@ public abstract class Article {
         return date2;
     }
 
+    public void setDate1(Date date1) {
+        this.date1 = date1;
+    }
+
+    public void setDate2(Date date2) {
+        this.date2 = date2;
+    }
+
     @Override
     public String toString() {
         return "Article{" +
