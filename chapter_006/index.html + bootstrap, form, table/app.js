@@ -1,4 +1,10 @@
 let inputs = [];
+let addRowButton = $('#add_row');
+
+
+function addRow(name) {
+    $('#table tr:last').after('<tr><td>' + name + '</td></tr>')
+}
 
 function validation() {
     $('input')
@@ -15,5 +21,13 @@ $('#form').submit(e => {
     validation();
     e.preventDefault();
 });
+
+addRowButton.click(() => {
+    let name = $('#name').val();
+    if(name.length) {
+        addRow(name);
+    }
+});
+
 
 
