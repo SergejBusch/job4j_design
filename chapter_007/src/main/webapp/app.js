@@ -7,17 +7,22 @@ btn.addEventListener('click', sendGreeting);
 async function sendGreeting(e) {
     e.preventDefault();
     try {
-        const response = await fetch(`http://localhost:8080/web/greet?name=${emailInput.value}`, {
+
+        const d = JSON.stringify({
+            name : emailInput.value,
+        });
+        let uri = encodeURI(`http://localhost:8080/web/greet?data=${d}`);
+        const response = await fetch(uri, {
                 method: 'GET',
                 headers: {
-                    'Content-Type': 'text/plain',
+                    'Content-Type': 'application/json',
                 },
             });
         if (response.status >= 400) {
             throw new Error("Bad response from server");
         }
-
-        para.innerText = await response.text();
+        let dataResponse =  await response.json();
+        para.innerText =  dataResponse.greet;
     } catch(e)  {
         para.innerText = e;
     }
