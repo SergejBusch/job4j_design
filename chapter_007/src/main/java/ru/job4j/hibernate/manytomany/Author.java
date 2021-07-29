@@ -15,7 +15,7 @@ public class Author {
     private int id;
     private String name;
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    List<Book> books = new ArrayList<>();
+    private List<Book> books = new ArrayList<>();
 
     public static Author of(String name) {
         Author author = new Author();
