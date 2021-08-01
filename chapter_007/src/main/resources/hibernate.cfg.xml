@@ -18,10 +18,8 @@
         <property name="format_sql">true</property>
         <property name="use_sql_comments">true</property>
 
-        <mapping class="ru.job4j.hibernate.onetomany.Car"/>
-        <mapping class="ru.job4j.hibernate.onetomany.CarModel"/>
+        <mapping class="ru.job4j.hibernate.lazyInitializationexception.CarBrand" />
+        <mapping class="ru.job4j.hibernate.lazyInitializationexception.CarsModel" />
 
-        <mapping class="ru.job4j.hibernate.manytomany.Book" />
-        <mapping class="ru.job4j.hibernate.manytomany.Author" />
     </session-factory>
 </hibernate-configuration>
