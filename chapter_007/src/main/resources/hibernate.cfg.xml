@@ -18,8 +18,7 @@
         <property name="format_sql">true</property>
         <property name="use_sql_comments">true</property>
 
-        <mapping class="ru.job4j.hibernate.lazyInitializationexception.CarBrand" />
-        <mapping class="ru.job4j.hibernate.lazyInitializationexception.CarsModel" />
+        <mapping class="ru.job4j.hibernate.hql.Candidate"/>
 
     </session-factory>
 </hibernate-configuration>
