@@ -25,8 +25,11 @@ public class Main {
 
             var selectAll = session.createQuery("from Candidate");
 
-            var selectOne = session.createQuery("from Candidate c where c.id = :Id");
-            selectOne.setParameter("Id", 1);
+            var selectById = session.createQuery("from Candidate c where c.id = :Id");
+            selectById.setParameter("Id", 1);
+
+            var selectByName = session.createQuery("from Candidate c where c.name = :Name");
+            selectByName.setParameter("Name", "BoB");
 
             var update = session.createQuery(
                     "update Candidate c set c.name = :newName, c.experience = :exp, c.salary = :newSalary where c.id = : Id")
