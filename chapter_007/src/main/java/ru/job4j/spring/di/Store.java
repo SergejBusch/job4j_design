@@ -1,10 +1,13 @@
 package ru.job4j.spring.di;
 
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class Store {
-    private List<String> data = new ArrayList<String>();
+    private final List<String> data = new ArrayList<>();
 
     public void add(String value) {
         data.add(value);
