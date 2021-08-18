@@ -164,5 +164,6 @@
     <module>chapter_005</module>
     <module>find_project</module>
     <module>chapter_007</module>
+      <module>spring</module>
   </modules>
 </project>

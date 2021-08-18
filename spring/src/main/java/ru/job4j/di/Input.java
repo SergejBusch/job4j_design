@@ -1,4 +1,4 @@
-package ru.job4j.spring.di;
+package ru.job4j.di;
 
 public interface Input {
 
